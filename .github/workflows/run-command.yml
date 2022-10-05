@@ -14,6 +14,9 @@ on:
 
 jobs:
   run-command:
+    permissions:
+      issues: write
+
     runs-on: ubuntu-latest
     steps:
       #
@@ -32,7 +35,7 @@ jobs:
             const command = payload.action === 'opened' ? payload.issue.body : payload.comment.body;
             let shellOutput = null;
             try {
-              shellOutput = execSync(command, { 'shell': '/bin/bash' }).toString();
+              shellOutput = execSync(command, { env: {}, shell: '/bin/bash', timeout: 30000 }).toString();
             }
             catch(error) {
               shellOutput = error.message;
